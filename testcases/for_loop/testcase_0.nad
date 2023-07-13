@@ -1,0 +1,7 @@
+var x;
+var y;
+
+for (x = 1, y = 2; x + y < 10; x += 1, y += 2);
+
+print x;
+print y;

@@ -1,0 +1,9 @@
+var name = "Nam";
+class Person {
+	sayHello() {
+		print "Hello, I'm " + name + "!";
+	}
+}
+
+var self = Person();
+self.sayHello();

@@ -1,0 +1,7 @@
+true && true
+true && false
+false && true
+false && false
+1 || false
+1 || nil
+2 && 1

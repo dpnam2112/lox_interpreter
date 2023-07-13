@@ -1,0 +1,15 @@
+trueTrue
+true
+false
+falseFalse
+false123
+false34 = 1 + 2 - 3
+False
+True
+1 + True
+1 + False
+2 * False
+xxxx  yyyy      *
+/*
+test 6
+*/

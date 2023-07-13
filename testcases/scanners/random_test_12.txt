@@ -1,0 +1,12 @@
+class Foo {
+    func bar() {
+	print this.x;
+	print this.y;
+    }
+
+    /*
+    This is a class
+    This is a class
+    This is a class
+    */
+}

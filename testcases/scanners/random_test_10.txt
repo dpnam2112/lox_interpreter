@@ -1,0 +1,5 @@
+class Foo {
+    func f() {
+	print "this is a method";
+    }
+}

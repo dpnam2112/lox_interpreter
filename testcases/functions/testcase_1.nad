@@ -1,0 +1,5 @@
+func helloworld() {
+	var x;
+}
+
+print x;

@@ -1,0 +1,10 @@
+func fib(n) {
+	/* Base case */
+	if (n < 2)
+		return n;
+	
+	/* Recursive case */
+	return fib(n - 1) + fib(n - 2);
+}
+
+print fib(2);

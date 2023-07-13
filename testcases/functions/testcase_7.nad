@@ -1,0 +1,7 @@
+var x = func (a) {
+	return func (b) {
+		return a + b; 
+	};
+};
+
+print x(1)(2);

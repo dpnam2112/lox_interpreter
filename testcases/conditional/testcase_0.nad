@@ -1,0 +1,7 @@
+var name = "Nam";
+if (name != "Nam") {
+	print "Hello, world";	
+}
+else if (name == "Nam") {
+	print "Hello, Man";
+}

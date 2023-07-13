@@ -1,0 +1,8 @@
+func sum(n) {
+    /* Find sum of all numbers from 1 to n */
+    var result = 0;
+    for (var i = 0; i <= n; i += 1) {
+	result = result + i;
+    }
+    return result;
+}

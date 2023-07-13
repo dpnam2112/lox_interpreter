@@ -1,0 +1,6 @@
+func infLoop() {
+    /*
+	Infinite loop
+    */
+    while (true);
+}

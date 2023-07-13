@@ -1,0 +1,26 @@
+func add(a) {
+	func add_a(b) {
+		return a + b;
+	}
+	
+	return add_a;
+}
+
+print add(5)(6);
+
+func f1(a, b, c) {
+	var d = 4;
+	func f2() {
+		var e = 5;
+		func f3() {
+			print e;
+			return a + b + c + d + e;
+		}
+		
+		return f3;
+	}
+	
+	return f2();
+}
+
+print f1(1, 2, 3)();

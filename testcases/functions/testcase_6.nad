@@ -1,0 +1,34 @@
+func fib(x) {
+	if (x < 2) {
+		return x;
+	}
+	
+	return fib(x - 1) + fib(x - 2);
+}
+
+for (var i = 0; i < 10; i += 1) {
+	print fib(i);
+}
+
+func sum(n) {
+	if (n < 2)
+		return n;
+	return sum(n - 1) + n;
+}
+
+for (var i = 0; i < 10; i += 1) {
+	print sum(i);
+}
+
+var x = 0;
+
+{
+	var x = 1;
+	func f() {
+		print x;
+	}
+	
+	f();
+	x = 2;
+	f();
+}

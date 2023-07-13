@@ -1,0 +1,17 @@
+class Person {
+	init(name, age) {
+		this.name = name;
+		this.age = age;
+	}
+
+	f() {
+		func g() {
+			return this.name;
+		}
+
+		return g;
+	}
+}
+
+var self = Person("Nam", 19);
+print self.f()(); //expect "Nam"
