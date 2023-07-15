@@ -404,16 +404,48 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 	}
 	
 	public Void visitClass(Stmt.Class stmt) {
+		// Validate the superclass
+		Object superclass = null;
+		if (stmt.superclass != null) {
+			superclass = evaluate(stmt.superclass);
+			if (!(superclass instanceof LoxClass)) {
+				throw new RuntimeError(stmt.superclass.name,
+						"'" + stmt.superclass.name.lexeme + "' is not a class.");
+			}
+		}
+
 		environment.define(stmt.name, null);
+		
+		if (superclass != null) {
+			/* Create a closure for each method in the inherited class */
+			environment = new Environment(environment);
+			environment.define("super", superclass);
+		}
 
 		Map<String, Function> methodMap = new HashMap<>();
 		for (Stmt.FuncStmt method : stmt.methods) {
 			Function methodObj = new Function(method, environment, method.name.lexeme.equals("init"));
 			methodMap.put(method.name.lexeme, methodObj);
 		}
-		NadClass classObj = new NadClass(stmt.name.lexeme, methodMap);
-
+		
+		if (superclass != null)
+			environment = environment.outerEnv;
+		
+		LoxClass classObj = new LoxClass(stmt.name.lexeme, methodMap, (LoxClass) superclass);
 		environment.assign(stmt.name, classObj);
+
 		return null;
+	}
+	
+	public Object visitSuper(Expr.Super expr) {
+		int spDistance = locals.get(expr);
+		LoxClass superclass = (LoxClass) environment.getAt(spDistance, expr.keyword);
+		Instance instance = (Instance) environment.getAt(spDistance - 1, "this");
+		Function method = superclass.findMethod(expr.method.lexeme);
+		if (method == null) {
+			throw new RuntimeError(expr.keyword, "The superclass does not own method '"
+									+ expr.method.lexeme + "'.");
+		}
+		return method.bind(instance);
 	}
 }

@@ -62,6 +62,13 @@ public class Environment {
 		return value;
 	}
 	
+	public Object getAt(int depth, String name) {
+		Object value = this.ancestor(depth).values.get(name);
+		if (value == null)
+			return null;
+		return value;
+	}
+	
 	public void assignAt(int depth, Token name, Object value) {
 		Environment ancestor = this.ancestor(depth);
 		ancestor.assign(name, value);

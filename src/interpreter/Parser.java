@@ -191,6 +191,13 @@ public class Parser {
 	
 	private Stmt classDeclaration() {
 		Token name = consume(TokenType.IDENTIFIER, "Expect class's name.");
+		
+		Expr.Variable spClass = null;
+		if (scanTokenIfMatch(TokenType.LT)) {
+			Token spClassName = consume(TokenType.IDENTIFIER, "Expect an identifier after '<'.");
+			spClass = new Expr.Variable(spClassName);
+		}
+		
 		consume(TokenType.LEFT_BRACKET, "Expect '{' after class's name.");
 		
 		List<Stmt.FuncStmt> methods = new ArrayList<>();
@@ -200,7 +207,7 @@ public class Parser {
 		}
 		
 		consume(TokenType.RIGHT_BRACKET, "Expect '}' after class's definition.");
-		return new Stmt.Class(name, methods);
+		return new Stmt.Class(name, methods, spClass);
 	}
 	
 	/* expressionStmt: parse the expression statement 
@@ -531,6 +538,12 @@ public class Parser {
 		}
 		if (scanTokenIfMatch(TokenType.THIS))
 			return new Expr.This(previous());
+		if (scanTokenIfMatch(TokenType.SUPER)) {
+			Token superTk = previous();
+			consume(TokenType.DOT, "Expect '.' after 'super' keyword.");
+			Token method = consume(TokenType.IDENTIFIER, "Expect an identifier after '.'.");
+			return new Expr.Super(superTk, method);
+		}
 		if (scanTokenIfMatch(TokenType.IDENTIFIER)) {
 			Token identifier = previous();
 			if (Scanner.reservedKeywords.containsKey(identifier.lexeme)) {

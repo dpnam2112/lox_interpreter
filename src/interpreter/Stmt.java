@@ -143,10 +143,12 @@ public abstract class Stmt{
  public static class Class extends Stmt {
   public final Token name;
   public final List<Stmt.FuncStmt> methods;
+  public final Expr.Variable superclass;
 
-  public Class(Token name, List<Stmt.FuncStmt> methods) {
+  public Class(Token name, List<Stmt.FuncStmt> methods, Expr.Variable superclass) {
    this.name = name;
    this.methods = methods;
+   this.superclass = superclass;
   }
 
   public <R> R accept(Visitor<R> visitor) {

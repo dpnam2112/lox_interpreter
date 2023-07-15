@@ -72,6 +72,10 @@ public class PrintAST implements Expr.Visitor<String> {
 		return "this";
 	}
 	
+	public String visitSuper(Expr.Super expr) {
+		return "super." + expr.method.lexeme;
+	}
+	
 	public static void main(String[] args) {
 		Expr.Unary expr1 = new Expr.Unary(new Token(TokenType.MINUS, "-", null, 0), new Expr.Literal(123));
 		Expr.Unary expr2 = new Expr.Unary(new Token(TokenType.NOT, "!", null, 0), new Expr.Literal(false));

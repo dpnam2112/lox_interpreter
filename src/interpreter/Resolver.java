@@ -20,7 +20,7 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 	private boolean isInLoop = false;
 
 	private enum ClassType {
-		NONE, CLASS,
+		NONE, CLASS, SUBCLASS,
 	}
 	private ClassType currentClass = ClassType.NONE;
 	
@@ -103,10 +103,24 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 	public Void visitClass(Stmt.Class stmt) {
 		declare(stmt.name);
 		define(stmt.name);
+		
+		if (stmt.superclass != null) {
+			// Check if the class is inherited from itself
+			if (stmt.superclass.name.lexeme.equals(stmt.name.lexeme)) {
+				Lox.error(stmt.superclass.name, "A class is not allowed to inherit from itself.");
+				Lox.hadSyntaxError = true;
+			}
+			else {
+				beginScope();
+				scopes.peek().put("super", true);
+
+				resolve(stmt.superclass);
+			}
+		}
 
 		beginScope();
 		ClassType beforeDecl = currentClass;	// Save state before class declaration
-		currentClass = ClassType.CLASS;
+		currentClass = (stmt.superclass == null) ? ClassType.CLASS : ClassType.SUBCLASS;
 
 		scopes.peek().put("this", true);
 		for (Stmt.FuncStmt method : stmt.methods) {
@@ -117,6 +131,10 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 
 		currentClass = beforeDecl;
 		endScope();
+		
+		if (stmt.superclass != null) {
+			endScope();
+		}
 
 		return null;
 	}
@@ -218,6 +236,15 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 			Lox.hadSyntaxError = true;
 		}
 
+		resolveLocal(expr, expr.keyword);
+		return null;
+	}
+	
+	public Void visitSuper(Expr.Super expr) {
+		if (currentClass != ClassType.SUBCLASS) {
+			Lox.error(expr.keyword, "Use of 'super' outside subclasses.");
+			Lox.hadSyntaxError = true;
+		}
 		resolveLocal(expr, expr.keyword);
 		return null;
 	}

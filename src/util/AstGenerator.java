@@ -31,6 +31,7 @@ public class AstGenerator {
 				"Set: Expr object, Token field, Expr value",
 				"This: Token keyword",
 				"Function: Stmt.Block body, List<Token> args",
+				"Super: Token keyword, Token method",
 		};
 		
 		defineAST(dest, "Expr", ASTDefs, externalClasses);
@@ -45,7 +46,7 @@ public class AstGenerator {
 				"FuncStmt: Token name, Block body, List<Token> argNames",
 				"Return: Token keyword, Expr expr",
 				"Jump: Token token",
-				"Class: Token name, List<Stmt.FuncStmt> methods",
+				"Class: Token name, List<Stmt.FuncStmt> methods, Expr.Variable superclass",
 		};
 		
 

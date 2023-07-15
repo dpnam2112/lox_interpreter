@@ -16,6 +16,7 @@ public abstract class Expr{
   public R visitSet(Set expr);
   public R visitThis(This expr);
   public R visitFunction(Function expr);
+  public R visitSuper(Super expr);
  }
 
  public static class Binary extends Expr {
@@ -185,6 +186,20 @@ public abstract class Expr{
 
   public <R> R accept(Visitor<R> visitor) {
    return visitor.visitFunction(this);
+  }
+ }
+
+ public static class Super extends Expr {
+  public final Token keyword;
+  public final Token method;
+
+  public Super(Token keyword, Token method) {
+   this.keyword = keyword;
+   this.method = method;
+  }
+
+  public <R> R accept(Visitor<R> visitor) {
+   return visitor.visitSuper(this);
   }
  }
 
